@@ -1,10 +1,3 @@
-/**
-* @file DistFieldFontGenerator.cs
-* @brief 
-* @author Yongwu Choi(amugana@bitmango.com)
-* @version 1.0
-* @date 2012-05-26
-*/
 using UnityEditor;
 using UnityEngine;
 
@@ -24,14 +17,20 @@ public class DistFieldFontGenerator : EditorWindow
     {
         bmFontSrc = EditorGUILayout.ObjectField("BMFont Source", bmFontSrc, typeof(Object), false);
         DistanceFieldScaleFactor = EditorGUILayout.IntSlider("Scale Factor", DistanceFieldScaleFactor, 1, 8);
+        DistanceField.SearchRadius = EditorGUILayout.IntSlider("Search Radius", DistanceField.SearchRadius, 1, 50);
 
         if(GUILayout.Button("Generate")){
-            string path = AssetDatabase.GetAssetPath(bmFontSrc.GetInstanceID());
-            if (path.ToLower().EndsWith(".fnt")) {
-                Generate(path);
+            if (bmFontSrc == null) {
+                EditorUtility.DisplayDialog("Error", "Select BMFont file first.", "Ok");
             }
-            else {
-                EditorUtility.DisplayDialog("Unknown File Extension", "Only .fnt files are supported.", "Ok");
+            else{
+                string path = AssetDatabase.GetAssetPath(bmFontSrc.GetInstanceID());
+                if (path.ToLower().EndsWith(".fnt")) {
+                    Generate(path);
+                }
+                else {
+                    EditorUtility.DisplayDialog("Unknown File Extension", "Only .fnt files are supported.", "Ok");
+                }
             }
         }
     }
@@ -74,52 +73,19 @@ public class DistFieldFontGenerator : EditorWindow
         fntInfo.texName = newTexName;
         fntInfo.scaleW /= DistanceFieldScaleFactor;
         fntInfo.scaleH /= DistanceFieldScaleFactor;
-        fntInfo.LineHeight /= DistanceFieldScaleFactor;
+        fntInfo.lineHeight /= DistanceFieldScaleFactor;
 
         foreach(BMFont.IntChar c in fntInfo.chars){
             c.x /= DistanceFieldScaleFactor;
             c.y /= DistanceFieldScaleFactor;
             c.width /= DistanceFieldScaleFactor;
-            c.heigt /= DistanceFieldScaleFactor;
+            c.height /= DistanceFieldScaleFactor;
             c.xoffset /= DistanceFieldScaleFactor;
             c.yoffset /= DistanceFieldScaleFactor;
             c.xadvance /= DistanceFieldScaleFactor;
         }
-/*
-        //Find prefab for storing bitmap font
-        string basePath = path.Substring(0, path.LastIndexOf("."));
-        string prefabPath = basePath + "_df";
 
-        Object prefab = AssetDatabase.LoadAssetAtPath(prefabPath + ".prefab", typeof(GameObject));
-        if (prefab == null)
-        {
-            prefab = EditorUtility.CreateEmptyPrefab(prefabPath + ".prefab");
-        }
-
-        //Create prefab if it doesnt exist
-        GameObject obj = null;
-        if (prefab as GameObject != null)
-        {
-            obj = (GameObject)EditorUtility.InstantiatePrefab(prefab);
-        }
-        else
-        {
-            obj = new GameObject();
-        }
-        obj.name = prefabPath.Substring(prefabPath.LastIndexOf("/") + 1);
-
-        //Make sure there's a BitmapFont component on it
-        BitmapFont fnt = obj.GetComponent<BitmapFont>();
-        if (fnt == null)
-        {
-            fnt = obj.AddComponent<BitmapFont>();
-        }
-
-        //Read BitmapFont info from .fnt file
-        UpdateBitmapFont(path, obj.GetComponent<BitmapFont>());
-
-        EditorUtility.ReplacePrefab(obj, prefab);
-        GameObject.DestroyImmediate(obj);
-        */
+        outputPath = path.Substring(0, path.LastIndexOf('.')) + "_dist.fnt";
+        BMFont.SaveToXML(fntInfo, outputPath);
     }
 }

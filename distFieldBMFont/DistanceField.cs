@@ -16,7 +16,7 @@ class DistanceField
      * The radius to search for an outline. Increasing this leads to a
      * more blurred distance field which takes a longer time to compute
      */
-    static int SearchRadius = 20;  
+    public static int SearchRadius = 20;  
 
     public enum TextureChannel
     {
