@@ -57,9 +57,10 @@ Shader "BitmapFont/Outline" {
 			float4 frag(v2f i) : COLOR
 			{
 				float4 base = tex2D(_MainTex, i.uv);
-				float alpha = smoothstep(_AlphaMin, _AlphaMax, base.w);
-				float outalpha = smoothstep(_OutAlphaMin, _OutAlphaMax, base.w);
-                return _Color*alpha + _OutColor*outalpha;
+				_Color.a *= smoothstep(_AlphaMin, _AlphaMax, base.w);
+				_OutColor.a *= smoothstep(_OutAlphaMin, _OutAlphaMax, base.w);
+                return lerp(_OutColor, _Color, _Color.a);
+                //out.a = alpha+outalpha;
 			}
 
 			ENDCG

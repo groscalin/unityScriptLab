@@ -40,13 +40,10 @@ public class DistFieldFontGenerator : EditorWindow
         BMFont.IntFontInfo fntInfo = BMFont.ParseFromPath(path);
         if(fntInfo == null) return;
             
-        Debug.Log(fntInfo.texName);
-
         //Process Texture
         string imagePath = System.IO.Path.GetDirectoryName(path) + "/" + fntInfo.texName;
         Texture2D inputTexture = (Texture2D)AssetDatabase.LoadAssetAtPath(imagePath, typeof(Texture2D));
 
-        Debug.Log(imagePath);
         //Make sure font texture is readable
         TextureImporter inputTextureImp = (TextureImporter)TextureImporter.GetAtPath(imagePath);
         inputTextureImp.textureType = TextureImporterType.Advanced;
@@ -65,7 +62,7 @@ public class DistFieldFontGenerator : EditorWindow
         //Set correct texture format
         TextureImporter texImp = (TextureImporter)TextureImporter.GetAtPath(outputPath);
         texImp.textureType = TextureImporterType.GUI;
-        texImp.isReadable = false;
+        texImp.isReadable = true;
         texImp.textureFormat = TextureImporterFormat.Alpha8;
         AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceSynchronousImport);
 

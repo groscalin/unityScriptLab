@@ -46,7 +46,7 @@ public class BMFont
             return null;
         }
 
-        foreach (XmlNode node in doc.SelectNodes(("/font/pages/pgae")))
+        foreach (XmlNode node in doc.SelectNodes(("/font/pages/page")))
         {
             fontInfo.texName = ReadStringAttribute(node, "file");
         }
@@ -197,7 +197,7 @@ public class BMFont
         common.SetAttribute("lineHeight", fnt.lineHeight.ToString());
         common.SetAttribute("scaleW", fnt.scaleW.ToString());
         common.SetAttribute("scaleH", fnt.scaleH.ToString());
-        common.SetAttribute("pgaes", "1");
+        common.SetAttribute("pages", "1");
         root.AppendChild(common);
 
         XmlElement pages = doc.CreateElement("pages");
