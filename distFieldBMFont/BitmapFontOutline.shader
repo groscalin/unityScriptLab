@@ -1,11 +1,11 @@
 Shader "BitmapFont/Outline" {
     Properties {
         _Color ("Main Color", Color) = (1,1,1,0)
-		_AlphaMin ("Alpha Min", Range(0.0,1.0)) = 0.49
-		_AlphaMax ("Alpha Max", Range(0.0,1.0)) = 0.54
+		_AlphaMin ("Alpha Min", Float) = 0.49
+		_AlphaMax ("Alpha Max", Float) = 0.54
         _OutColor ("Outline Color", Color) = (0.3,0.3,0.3,0)
-		_OutAlphaMin ("Outline Alpha Min", Range(0.0,1.0)) = 0.28
-		_OutAlphaMax ("Outline Alpha Max", Range(0.0,1.0)) = 0.54
+		_OutAlphaMin ("Outline Alpha Min", Float) = 0.28
+		_OutAlphaMax ("Outline Alpha Max", Float) = 0.54
         _MainTex ("Base (RGB)", 2D) = "white" {}
     }
 	SubShader {
@@ -60,7 +60,6 @@ Shader "BitmapFont/Outline" {
 				_Color.a *= smoothstep(_AlphaMin, _AlphaMax, base.w);
 				_OutColor.a *= smoothstep(_OutAlphaMin, _OutAlphaMax, base.w);
                 return lerp(_OutColor, _Color, _Color.a);
-                //out.a = alpha+outalpha;
 			}
 
 			ENDCG
