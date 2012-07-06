@@ -4,4 +4,5 @@
 
 dirname=`perl -e 'use Cwd "abs_path";print abs_path(shift)' $1`
 echo /Applications/Unity/Unity.app/Contents/MacOS/Unity -projectPath $dirname
-/Applications/Unity/Unity.app/Contents/MacOS/Unity -projectPath $dirname
+/Applications/Unity/Unity.app/Contents/MacOS/Unity -projectPath $dirname &
+exit 0
